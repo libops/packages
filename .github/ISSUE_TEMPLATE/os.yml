@@ -1,0 +1,55 @@
+name: "New OS or OS release"
+description: "Request a distribution, distribution release or native package format."
+title: "[OS]: "
+body:
+  - type: markdown
+    attributes:
+      value: "A new OS is a substantially larger, ongoing commitment than a new package. Builders, native packaging, signing, tests, publishing and compatibility must be scoped and funded. A request alone does not establish support."
+  - type: textarea
+    id: os
+    attributes:
+      label: "Distribution and releases"
+      description: "Name the distribution, release versions and package format."
+    validations:
+      required: true
+  - type: textarea
+    id: support
+    attributes:
+      label: "Official support and base images"
+      description: "Link upstream lifecycle information and official base images or repositories."
+    validations:
+      required: true
+  - type: textarea
+    id: matrix
+    attributes:
+      label: "Initial package and architecture scope"
+      description: "List required packages, supported software lines and CPU architectures. Explain your priorities."
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: "Validation and maintenance"
+      description: "Describe installation environments, available test infrastructure and any packaging constraints."
+    validations:
+      required: true
+  - type: dropdown
+    id: commitment
+    attributes:
+      label: Are you willing to maintain or sponsor this support?
+      description: A maintainer or sponsor can make the agreed scope part of our release contract after review. Requests without either are welcome but do not establish support.
+      options:
+        - I can maintain it
+        - I can sponsor it
+        - I can maintain and sponsor it
+        - I would like to discuss contributing
+        - Request only for now
+    validations:
+      required: true
+  - type: textarea
+    id: contribution
+    attributes:
+      label: Maintenance or sponsorship proposal
+      description: Describe the scope you can own, relevant experience, test infrastructure, ongoing availability or recurring funding. Do not include payment or private details.
+    validations:
+      required: false

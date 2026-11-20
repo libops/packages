@@ -1,0 +1,6 @@
+# Example ownership teams; create/verify these teams and repository access later.
+# GitHub uses the last matching rule, so recipe rules list both teams.
+/packages/alpine/ @libops/os-alpine
+/packages/alpine/*/php/ @libops/os-alpine @libops/package-php
+/packages/alpine/*/go/ @libops/os-alpine @libops/package-go
+/packages/alpine/*/python/ @libops/os-alpine @libops/package-python

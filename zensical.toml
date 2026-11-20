@@ -1,0 +1,34 @@
+[project]
+site_name = "Packages"
+site_description = "Supported upstream packages for public-facing services."
+site_url = "https://libops.github.io/packages/"
+repo_url = "https://github.com/libops/packages"
+edit_uri = "edit/main/docs/"
+docs_dir = "docs"
+site_dir = "site"
+nav = [
+  {"Home" = "index.md"},
+  {"Consume packages" = "consuming.md"},
+  {"Security and runtime scanning" = "security-metadata.md"},
+  {"Maintainers and ownership" = "maintainers.md"},
+  {"Sponsorship" = "sponsorship.md"},
+  {"Decisions" = "decisions.md"},
+  {"Pipeline" = "pipeline.md"},
+  {"Pipeline tooling" = "pipeline-tools.md"},
+  {"First release" = "first-release.md"},
+  {"Implementation guide" = "implementation.md"},
+  {"Add an OS / package repository" = "guides/add-os.md"},
+  {"Add a CPU architecture" = "guides/add-architecture.md"},
+  {"Add a package" = "guides/add-package.md"},
+  {"CI standards" = "ci-standards.md"},
+  {"Go build helpers" = "build-helpers.md"},
+  {"Roadmap" = "roadmap.md"},
+  {"Documentation" = "documentation.md"},
+  {"License" = "license.md"},
+]
+
+[project.theme]
+features = ["navigation.sections", "navigation.top", "content.code.copy", "content.action.edit"]
+
+[project.theme.icon]
+repo = "fontawesome/brands/github"

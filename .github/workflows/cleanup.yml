@@ -1,0 +1,96 @@
+name: Clean package artifacts
+on:
+  schedule:
+    - cron: '43 4 * * *'
+  workflow_run:
+    workflows: [Packages]
+    types: [completed]
+  pull_request_target:
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Closed PR number targeting main
+        required: true
+        type: string
+permissions: {}
+concurrency:
+  group: cleanup-${{ github.event.workflow_run.id || github.event.pull_request.number || inputs.pr }}
+  cancel-in-progress: false
+jobs:
+  cleanup:
+    permissions:
+      contents: read
+      packages: write
+      actions: read
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # Only trusted main code executes, never the closed PR's checkout.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Require the selected Go toolchain
+        run: echo 'GOTOOLCHAIN=local' >> "$GITHUB_ENV"
+      - name: Remove disposable images and caches
+        env:
+          PR: ${{ github.event.pull_request.number || inputs.pr }}
+          REPOSITORY: ${{ vars.repository || 'ghcr.io/libops' }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: make registry-clean-pr DRY_RUN=0
+  cleanup-main:
+    if: github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event != 'pull_request'
+    permissions:
+      contents: read
+      packages: write
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Require the selected Go toolchain
+        run: echo 'GOTOOLCHAIN=local' >> "$GITHUB_ENV"
+      - name: Remove completed main candidates
+        env:
+          CLEANUP_RUN: ${{ github.event.workflow_run.id }}
+          REPOSITORY: ${{ vars.repository || 'ghcr.io/libops' }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: make registry-clean-run DRY_RUN=0
+
+  cleanup-cache:
+    if: github.event_name == 'schedule'
+    permissions:
+      contents: read
+      packages: write
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Require the selected Go toolchain
+        run: echo 'GOTOOLCHAIN=local' >> "$GITHUB_ENV"
+      - name: Retire orphaned BuildKit caches
+        env:
+          REPOSITORY: ${{ vars.repository || 'ghcr.io/libops' }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: make registry-clean-cache DRY_RUN=0

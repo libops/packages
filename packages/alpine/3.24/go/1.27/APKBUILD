@@ -1,0 +1,53 @@
+maintainer="LibOps <libops@users.noreply.github.com>"
+# Official Go source; no downstream source patches.
+pkgname=go127
+pkgver=1.27.4
+pkgrel=2
+pkgdesc="Go 1.27 toolchain for public-facing services"
+url="https://go.dev/"
+arch="x86_64 aarch64"
+license="BSD-3-Clause"
+depends="binutils gcc musl-dev"
+makedepends="bash go"
+checkdepends="git-daemon"
+source="https://go.dev/dl/go$pkgver.src.tar.gz"
+builddir="$srcdir/go"
+options="!strip"
+
+build() {
+    export GOROOT_BOOTSTRAP=/usr/lib/go
+    export GOROOT_FINAL=/usr/lib/go
+    export GOTOOLCHAIN=local
+    cd src
+    ./make.bash
+}
+
+check() {
+    # abuild places GOTMPDIR outside os.TempDir; upstream linker security tests
+    # must create fixtures beneath the same trusted temporary root.
+    unset GOTMPDIR
+    export GOROOT="$builddir"
+    export GOTOOLCHAIN=local
+    # Alpine also excludes TSAN: it needs ASLR controls denied by containers.
+    # Keep all other sanitizer cases and the rest of the upstream suite.
+    local excluded='^TestTSAN$'
+    if [ "$CARCH" = x86_64 ]; then
+        # musl's fixed SIGSTKSZ is too small on newer GitHub AMD64 kernels.
+        # These two C fixtures abort before testing Go; see CI standards.
+        excluded='^(TestTSAN|TestSigStackSwapping|TestSigaltstack)$'
+    fi
+    export GOFLAGS="${GOFLAGS:+$GOFLAGS }-skip=$excluded"
+    cd src
+    ./run.bash --no-rebuild
+}
+
+package() {
+    mkdir -p "$pkgdir/usr/lib/go" "$pkgdir/usr/bin"
+    cp -a bin pkg src lib misc api doc go.env VERSION LICENSE PATENTS "$pkgdir/usr/lib/go/"
+    # Binary fixtures under testdata are for upstream tests, not the installed compiler.
+    find "$pkgdir/usr/lib/go/src" -type d -name testdata -prune -exec rm -rf {} +
+    ln -s /usr/lib/go/bin/go "$pkgdir/usr/bin/go"
+    ln -s /usr/lib/go/bin/gofmt "$pkgdir/usr/bin/gofmt"
+}
+
+sha512sums="bc5cb8bd8a92293afbb0ea2d949453fede75706ee94147dd163b336913acb4b5cf3c41c861d7f0c1a4a6373856720eb44032bf5916054f0d8fb926657fb5b754  go1.27.4.src.tar.gz"

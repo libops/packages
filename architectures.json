@@ -1,0 +1,4 @@
+{
+  "amd64": {"platform": "linux/amd64", "runner": ["ubuntu-24.04"]},
+  "arm64": {"platform": "linux/arm64", "runner": ["ubuntu-24.04-arm"]}
+}

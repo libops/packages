@@ -1,0 +1,37 @@
+maintainer="LibOps <libops@users.noreply.github.com>"
+# Official Ruby source; no downstream source patches.
+pkgname=ruby40
+pkgver=4.0.10
+pkgrel=5
+pkgdesc="Ruby 4.0"
+url="https://www.ruby-lang.org/"
+arch="all"
+license="Ruby BSD-2-Clause"
+subpackages="$pkgname-doc"
+checkdepends="bash tzdata"
+makedepends="autoconf bison gdbm-dev libffi-dev linux-headers ncurses-dev openssl-dev readline-dev yaml-dev zlib-dev"
+source="https://cache.ruby-lang.org/pub/ruby/4.0/ruby-$pkgver.tar.gz"
+builddir="$srcdir/ruby-$pkgver"
+
+build() {
+    ./configure --build=$CBUILD --host=$CHOST --prefix=/usr \
+        --enable-shared --disable-install-doc --disable-yjit
+    make
+}
+
+check() {
+    # Bootstrap stack probes require the normal runtime defaults.
+    unset RUBY_THREAD_VM_STACK_SIZE RUBY_THREAD_MACHINE_STACK_SIZE
+    make test
+    # Recursive upstream cases need more stack than musl's small defaults.
+    export RUBY_THREAD_VM_STACK_SIZE=4194304
+    export RUBY_THREAD_MACHINE_STACK_SIZE=4194304
+    make test-all
+}
+
+package() {
+    make DESTDIR="$pkgdir" install
+    install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
+
+sha512sums="b5a1be1bdad01564a766f2f6f4ec2d7eed6fcbc52b8742640214e8c8272bf62e7144126a45de5271de3bb4855db7e10672af344690af8c168523f9e44d823f00  ruby-4.0.10.tar.gz"

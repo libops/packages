@@ -1,0 +1,28 @@
+name: "Sponsorship proposal"
+description: "Discuss infrastructure, package, CPU architecture or larger OS support commitments."
+title: "[Sponsorship]: "
+body:
+  - type: markdown
+    attributes:
+      value: "General sponsorship funds shared infrastructure. New-package support is a smaller recurring tier; new-OS support is a substantially larger commitment with separately scoped initial work. Both account for indefinite maintenance within upstream support lifetimes. Scope and pricing require agreement. This issue is public; do not share payment details."
+  - type: textarea
+    id: scope
+    attributes:
+      label: "What would you like to sponsor?"
+      description: "Describe general infrastructure, a package on existing OS targets, a new CPU architecture, or a new OS. Include the OS/package matrix and native hardware or maintenance you can contribute."
+    validations:
+      required: true
+  - type: textarea
+    id: outcomes
+    attributes:
+      label: "Desired outcomes"
+      description: "Describe the value, priorities and any timeline you would like to discuss."
+    validations:
+      required: true
+  - type: textarea
+    id: funding
+    attributes:
+      label: "Funding and continuity"
+      description: "Optional: share a public budget range, recurring duration, or in-kind contribution. Private financial details can be discussed separately."
+    validations:
+      required: false

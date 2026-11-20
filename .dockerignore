@@ -1,0 +1,6 @@
+**/.git
+**/__pycache__
+site
+build
+.env
+.env.*
