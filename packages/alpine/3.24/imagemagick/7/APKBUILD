@@ -1,5 +1,5 @@
 maintainer="LibOps <libops@users.noreply.github.com>"
-# upstream-tag=7.1.2-25
+# upstream-tag=7.1.2-36
 # Adapted from: https://git.alpinelinux.org/aports/tree/community/imagemagick/APKBUILD
 # Contributor: Nigel Banks <nigel.g.banks@gmail.com>
 # Contributor: Łukasz Jendrysik <scadu@yandex.com>
