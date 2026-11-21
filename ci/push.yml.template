@@ -97,7 +97,7 @@ jobs:
           ' --arg fork "${FORK:-false}" --argjson results "$RESULTS" <<< "$RESULTS"
 
   docs-build:
-    needs: [@@NEEDS@@, required-checks]
+    needs: required-checks
     if: ${{ always() && !cancelled() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.required-checks.result == 'success' }}
     permissions:
       contents: read

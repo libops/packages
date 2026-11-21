@@ -298,7 +298,7 @@ func TestRequiredGateReportsPlanningErrors(t *testing.T) {
 	}
 }
 
-func TestDocumentationWaitsForEveryPackageAndRequiredGate(t *testing.T) {
+func TestDocumentationWaitsForRequiredGate(t *testing.T) {
 	c, err := catalog.Load("../..")
 	if err != nil {
 		t.Fatal(err)
@@ -308,15 +308,7 @@ func TestDocumentationWaitsForEveryPackageAndRequiredGate(t *testing.T) {
 		t.Fatal(err)
 	}
 	docs := strings.Split(strings.Split(workflow, "  docs-build:")[1], "  docs-deploy:")[0]
-	needs := strings.Split(strings.Split(docs, "needs: [")[1], "]")[0]
-	for _, name := range c.Names() {
-		for _, prefix := range []string{"build-", "test-"} {
-			if !strings.Contains(needs, prefix+name) {
-				t.Fatalf("docs do not wait for %s%s", prefix, name)
-			}
-		}
-	}
-	for _, required := range []string{"required-checks", "always() && !cancelled()", "github.ref == 'refs/heads/main'", "github.event_name != 'pull_request'", "needs.required-checks.result == 'success'", "make docs-packages", "make docs-build", "persist-credentials: false"} {
+	for _, required := range []string{"needs: required-checks", "always() && !cancelled()", "github.ref == 'refs/heads/main'", "github.event_name != 'pull_request'", "needs.required-checks.result == 'success'", "make docs-packages", "make docs-build", "persist-credentials: false"} {
 		if !strings.Contains(docs, required) {
 			t.Fatalf("documentation gate missing %s", required)
 		}

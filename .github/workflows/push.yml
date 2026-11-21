@@ -689,7 +689,7 @@ jobs:
           ' --arg fork "${FORK:-false}" --argjson results "$RESULTS" <<< "$RESULTS"
 
   docs-build:
-    needs: [plan, install-check, build-alpine-3-24-go-1-26, test-alpine-3-24-go-1-26, build-alpine-3-24-go-1-27, test-alpine-3-24-go-1-27, build-alpine-3-24-imagemagick-7, test-alpine-3-24-imagemagick-7, build-alpine-3-24-java-21, test-alpine-3-24-java-21, build-alpine-3-24-java-25, test-alpine-3-24-java-25, build-alpine-3-24-leptonica-1, test-alpine-3-24-leptonica-1, build-alpine-3-24-nginx-1-30, test-alpine-3-24-nginx-1-30, build-alpine-3-24-php-8-4, test-alpine-3-24-php-8-4, build-alpine-3-24-php-8-5, test-alpine-3-24-php-8-5, build-alpine-3-24-php-8-6, test-alpine-3-24-php-8-6, build-alpine-3-24-python-3-12, test-alpine-3-24-python-3-12, build-alpine-3-24-python-3-13, test-alpine-3-24-python-3-13, build-alpine-3-24-python-3-14, test-alpine-3-24-python-3-14, build-alpine-3-24-ruby-3-3, test-alpine-3-24-ruby-3-3, build-alpine-3-24-ruby-3-4, test-alpine-3-24-ruby-3-4, build-alpine-3-24-ruby-4-0, test-alpine-3-24-ruby-4-0, required-checks]
+    needs: required-checks
     if: ${{ always() && !cancelled() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.required-checks.result == 'success' }}
     permissions:
       contents: read
