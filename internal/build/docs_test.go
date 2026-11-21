@@ -15,7 +15,7 @@ func TestPackageReferenceUsesExactPublishedDigests(t *testing.T) {
 	}
 	digest := "sha256:" + strings.Repeat("a", 64)
 	count := 0
-	page, err := packagePage("../..", c, "ghcr.io/libops", func(ref string) (string, error) {
+	page, tabs, err := packagePages("../..", c, "ghcr.io/libops", func(ref string) (string, error) {
 		count++
 		if strings.Contains(ref, "/php:") {
 			return "", nil
@@ -28,7 +28,10 @@ func TestPackageReferenceUsesExactPublishedDigests(t *testing.T) {
 	if count != len(c) || !strings.Contains(page, "@"+digest) || !strings.Contains(page, "/packages/openjdk21") || !strings.Contains(page, "not publicly available") || strings.Contains(page, "<verified") || strings.Contains(page, "AS php_packages") {
 		t.Fatal("reference omitted targets or invented an installable release")
 	}
-	_, err = packagePage("../..", c, "ghcr.io/libops", func(string) (string, error) { return "", fmt.Errorf("registry outage") })
+	if strings.Count(tabs, "=== ") != len(c) || !strings.Contains(tabs, `=== "PHP 8.4"`) || !strings.Contains(tabs, `=== "Java 21"`) || !strings.Contains(tabs, "    ```dockerfile") || !strings.Contains(tabs, "    /packages/openjdk21") || strings.Contains(tabs, "AS php_packages") {
+		t.Fatal("quick-start tabs do not match published package examples")
+	}
+	_, _, err = packagePages("../..", c, "ghcr.io/libops", func(string) (string, error) { return "", fmt.Errorf("registry outage") })
 	if err == nil {
 		t.Fatal("registry outage hidden")
 	}

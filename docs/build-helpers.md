@@ -62,5 +62,6 @@ in consumer images.
 
 `make docs-packages` resolves catalog revision tags and regenerates the package
 reference and homepage quick start. `make docs-build` stays offline with respect
-to registry metadata. The docs workflow refreshes after successful main package
-runs and deploys the generated output without committing it.
+to registry metadata. The package workflow refreshes the reference and tabbed homepage only on main,
+after all build/test jobs finish and required checks pass, then deploys the
+generated output without committing it.

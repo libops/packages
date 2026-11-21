@@ -8,14 +8,17 @@ make docs-build   # strict build, exports site/
 make docs-serve   # local preview on :8000; local Docker bind mounts required
 ```
 
-The docs workflow validates PRs, deploys main to GitHub Pages, and refreshes after
-a successful main package workflow. A Go helper generates `docs/packages.md` and
-the homepage quick start from current catalog revisions and registry manifests.
-Missing/private revisions get no fabricated digest or install command. Registry
-outages fail refresh rather than publishing misleading pins. The generated
-reference is refreshed in the Pages build; CI does not commit it back to main. Enable the
-repository's **Pages → Source → GitHub Actions** setting. The expected URL is
-<https://libops.github.io/packages/>.
+The `Packages` workflow builds and deploys documentation only on main, after all
+package build/test jobs finish and the required checks pass. It checks out the
+same commit as the packages, then runs `make docs-packages` before `make docs-build`.
+A Go helper generates the package reference and homepage's Alpine 3.24 install
+tabs from catalog revisions and verified registry digests. Missing/private revisions
+get no fabricated digest or install command; registry outages fail the refresh.
+CI deploys generated output without committing it back to main.
+
+Enable **Pages → Source → GitHub Actions**. Documentation is published at
+<https://libops.github.io/packages/>. Content tabs, highlighted Dockerfile blocks
+and copy buttons are configured in `zensical.toml`.
 
 Keep user instructions short. Put each contract in one guide and link to it.
 The roadmap lists only unfinished work; delete completed entries. `AGENTS.md`

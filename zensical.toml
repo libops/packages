@@ -35,7 +35,17 @@ nav = [
 ]
 
 [project.theme]
-features = ["navigation.sections", "navigation.top", "content.code.copy", "content.action.edit"]
+features = ["navigation.sections", "navigation.top", "content.code.copy", "content.tabs.link", "content.action.edit"]
 
 [project.theme.icon]
 repo = "fontawesome/brands/github"
+
+[project.markdown_extensions]
+pymdownx.superfences = {}
+pymdownx.tabbed.alternate_style = true
+pymdownx.tabbed.slugify.object = "pymdownx.slugs.slugify"
+pymdownx.tabbed.slugify.kwds.case = "lower"
+pymdownx.highlight.anchor_linenums = true
+pymdownx.highlight.line_spans = "__span"
+pymdownx.highlight.pygments_lang_class = true
+pymdownx.inlinehilite = {}

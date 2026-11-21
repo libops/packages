@@ -1,6 +1,6 @@
 # Consume packages
 
-Use the [PHP quick start](index.md#quick-start-install-php) or choose any line
+Use the [tabbed quick start](index.md#quick-start) or choose any line
 from the [package reference](packages.md), including verified digests and install commands. Carriers are scratch
 images containing packages; mount them during your runtime image build.
 

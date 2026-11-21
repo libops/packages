@@ -37,7 +37,7 @@ func TestRequiredGate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	gate := strings.Split(string(data), "      - name: Check every selected build and test\n        run: |\n")[1]
+	gate := strings.Split(strings.Split(string(data), "      - name: Check every selected build and test\n        run: |\n")[1], "\n  docs-build:")[0]
 	for _, tc := range []struct {
 		build, test string
 		pass        bool
@@ -54,7 +54,7 @@ func TestRequiredGate(t *testing.T) {
 }
 
 func TestConcurrencySeparatesPRsAndMainPushes(t *testing.T) {
-	for _, file := range []string{"../../ci/push.yml.template", "../../.github/workflows/docs.yml"} {
+	for _, file := range []string{"../../ci/push.yml.template"} {
 		data, err := os.ReadFile(file)
 		if err != nil {
 			t.Fatal(err)
@@ -256,7 +256,7 @@ func TestInstallGateFailsClosed(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	gate := strings.Split(string(data), "      - name: Check every selected build and test\n        run: |\n")[1]
+	gate := strings.Split(strings.Split(string(data), "      - name: Check every selected build and test\n        run: |\n")[1], "\n  docs-build:")[0]
 	for _, selected := range []bool{false, true} {
 		for _, result := range []string{"success", "failure", "cancelled", "skipped"} {
 			targets := `[]`
@@ -279,7 +279,7 @@ func TestRequiredGateReportsPlanningErrors(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	gate := strings.Split(string(data), "      - name: Check every selected build and test\n        run: |\n")[1]
+	gate := strings.Split(strings.Split(string(data), "      - name: Check every selected build and test\n        run: |\n")[1], "\n  docs-build:")[0]
 	for _, tc := range []struct{ result, targets, message string }{
 		{"failure", "", "Planning failed"},
 		{"cancelled", "", "Planning failed"},
@@ -295,5 +295,33 @@ func TestRequiredGateReportsPlanningErrors(t *testing.T) {
 		if err == nil || !strings.Contains(string(output), tc.message) || strings.Contains(string(output), "invalid JSON text passed") {
 			t.Fatalf("%+v: %s (%v)", tc, output, err)
 		}
+	}
+}
+
+func TestDocumentationWaitsForEveryPackageAndRequiredGate(t *testing.T) {
+	c, err := catalog.Load("../..")
+	if err != nil {
+		t.Fatal(err)
+	}
+	workflow, err := Workflow("../..", c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	docs := strings.Split(strings.Split(workflow, "  docs-build:")[1], "  docs-deploy:")[0]
+	needs := strings.Split(strings.Split(docs, "needs: [")[1], "]")[0]
+	for _, name := range c.Names() {
+		for _, prefix := range []string{"build-", "test-"} {
+			if !strings.Contains(needs, prefix+name) {
+				t.Fatalf("docs do not wait for %s%s", prefix, name)
+			}
+		}
+	}
+	for _, required := range []string{"required-checks", "always() && !cancelled()", "github.ref == 'refs/heads/main'", "github.event_name != 'pull_request'", "needs.required-checks.result == 'success'", "make docs-packages", "make docs-build", "persist-credentials: false"} {
+		if !strings.Contains(docs, required) {
+			t.Fatalf("documentation gate missing %s", required)
+		}
+	}
+	if strings.Contains(docs, "workflow_run") {
+		t.Fatal("documentation must use this run's checkout")
 	}
 }

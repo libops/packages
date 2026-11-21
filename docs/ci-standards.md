@@ -153,8 +153,10 @@ Renovate runs its own pinned container on GitHub-hosted Ubuntu, including truste
 Go updater commands. Optional repository variable `RENOVATE_RUNNER` selects a
 dedicated runner label; it must provide Docker and allow the shared Go updater.
 
-Documentation refreshes the registry-backed package reference after a successful
-main `Packages` run. The `workflow_run` job checks out trusted main, never PR code
-or artifacts. PR documentation builds use the committed reference without registry
-credentials. `make dev-test-install` executes the same named installer consumers
-use against an older-than-Alpine fixture and checks its carrier-only dependency.
+The main package workflow builds docs only after every build/test job completes
+and the required checks pass. It refreshes registry-backed install tabs from the
+same commit and published manifests, then deploys Pages. There is no independent
+docs workflow that can race package publication. PRs never deploy docs. Run
+`make docs-build` locally for strict documentation validation.
+`make dev-test-install` executes the same named installer consumers use against
+an older-than-Alpine fixture and checks its carrier-only dependency.
