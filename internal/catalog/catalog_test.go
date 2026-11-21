@@ -31,6 +31,7 @@ func TestAffectedIsolationAndDescendants(t *testing.T) {
 		want []string
 	}{
 		{"README.md", []string{}}, {"internal/build/run.go", []string{}},
+		{".github/actionlint.yaml", []string{}}, {".github/actionlint.yml", []string{}},
 		{"packages/alpine/3.24/php/8.4/APKBUILD", []string{"alpine-3-24-nginx-1-30", "alpine-3-24-php-8-4"}},
 		{"packages/alpine/3.24/base-image.txt", []string{"alpine-3-24-nginx-1-30", "alpine-3-24-php-8-4"}},
 		{"packages/debian/13/php/8.4/control", []string{"debian-13-php-8-4"}},
@@ -42,6 +43,9 @@ func TestAffectedIsolationAndDescendants(t *testing.T) {
 	}
 	if got := c.Affected([]string{"packages.json"}, c); len(got) != 0 {
 		t.Fatal(got)
+	}
+	if !ValidationInput(".github/actionlint.yaml") || !ValidationInput(".github/actionlint.yml") {
+		t.Fatal("lint configuration must receive representative PR validation")
 	}
 }
 func TestRejectInvalidDependencies(t *testing.T) {

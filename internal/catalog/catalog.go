@@ -280,5 +280,5 @@ func HelperInput(file string) bool {
 
 // ValidationInput changes orchestration, not a package release's source lock.
 func ValidationInput(file string) bool {
-	return HelperInput(file) || strings.HasPrefix(file, ".github/workflows/") || strings.HasPrefix(file, "ci/") || file == "Makefile" || file == "Dockerfile.package" || file == "test.Dockerfile" || file == "architectures.json"
+	return HelperInput(file) || strings.HasPrefix(file, ".github/workflows/") || strings.HasPrefix(file, "ci/") || file == ".github/actionlint.yaml" || file == ".github/actionlint.yml" || file == "Makefile" || file == "Dockerfile.package" || file == "test.Dockerfile" || file == "architectures.json"
 }
