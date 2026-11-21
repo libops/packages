@@ -85,7 +85,7 @@ jobs:
       contents: read
       packages: write
     needs: build
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       context: ${{ steps.publish.outputs.context }}
     env:

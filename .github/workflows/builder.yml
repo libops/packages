@@ -57,7 +57,7 @@ jobs:
       contents: read
       packages: write
     needs: build
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       TARGET: ${{ inputs.target }}
       REPOSITORY: ${{ vars.repository || 'ghcr.io/libops' }}
