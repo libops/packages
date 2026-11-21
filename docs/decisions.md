@@ -23,6 +23,9 @@
   for signature verification rather than inventing cryptography. Bash stays small.
 - Local and CI execution use the same Make targets. Interactive auth prompts only
   when needed; noninteractive missing credentials fail clearly.
+- Use this repository to prove timely, reliable upstream packaging and build
+  toward contributing release updates to Alpine aports. Future aports merge
+  requests run alongside our release path, using the same verified inputs.
 - Original LibOps work is MIT. Third-party code, notices and corresponding-source
   obligations retain their original licenses.
 

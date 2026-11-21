@@ -46,3 +46,17 @@ Only unfinished work belongs here. Operating contracts live in the linked guides
   configure the maintaining team's repository issue notifications/integration,
   and exercise the scheduled-failure issue workflow. Add an external stale-run
   monitor/dispatcher so schedule inactivity or GitHub outages cannot go unnoticed.
+
+## Contribute to Alpine aports
+
+- Use this repository as a trial of timely, reliable releases for software we
+  depend on. Establish a track record of verified builds, tests and delivery.
+- Add an independent contribution path that prepares aports recipe updates and
+  merge requests from the same verified upstream release inputs. Track the
+  corresponding aports package/branch, follow Alpine's packaging and review
+  conventions, and update an existing MR rather than duplicating it. Run this
+  alongside carrier publication so upstream review does not delay our releases.
+- Start with a few shared packages, work with Alpine maintainers, and expand
+  contributions as trust, results and maintainer capacity grow. Shipping needed
+  fixes here is the immediate goal; making that work useful more broadly is the
+  intended direction.
