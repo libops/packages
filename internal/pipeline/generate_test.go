@@ -12,6 +12,8 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+
+	"go.yaml.in/yaml/v3"
 )
 
 func TestWorkflowBuildDoesNotWaitForParentTest(t *testing.T) {
@@ -185,6 +187,9 @@ func TestSimpleUpdaterAllowlist(t *testing.T) {
 	if !pattern.MatchString("make revise-base TARGET=alpine/3.24") {
 		t.Fatal("base revision command blocked")
 	}
+	if !pattern.MatchString("make dev-generate") {
+		t.Fatal("workflow regeneration command blocked")
+	}
 	for _, command := range []string{"make update TARGET=alpine-3-24-php-8-4;id", "make update TARGET=$(id)", "make update TARGET=alpine-3-24-php-8-4\nmake publish", "make update TARGET=../../secrets", "make publish TARGET=alpine-3-24-php-8-4", "make revise-base TARGET=alpine/3.24;id", "make revise-base TARGET=../../secrets"} {
 		if pattern.MatchString(command) {
 			t.Fatal("unsafe command allowed", command)
@@ -315,5 +320,20 @@ func TestDocumentationWaitsForRequiredGate(t *testing.T) {
 	}
 	if strings.Contains(docs, "workflow_run") {
 		t.Fatal("documentation must use this run's checkout")
+	}
+	deploy := strings.Split(workflow, "  docs-deploy:")[1]
+	if !strings.Contains(deploy, "always() && !cancelled()") || !strings.Contains(deploy, "needs.docs-build.result == 'success'") {
+		t.Fatal("deployment must tolerate skipped package ancestors but require a successful docs build")
+	}
+}
+
+func TestWorkflowTemplateIsValidYAML(t *testing.T) {
+	data, err := os.ReadFile("../../ci/push.yml.template")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var workflow map[string]any
+	if err := yaml.Unmarshal(data, &workflow); err != nil {
+		t.Fatalf("Renovate must be able to parse the source template: %v", err)
 	}
 }

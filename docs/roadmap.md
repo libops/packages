@@ -5,17 +5,15 @@ Only unfinished work belongs here. Operating contracts live in the linked guides
 
 ## MVP blockers
 
-- Verify every current recipe's build, upstream suite and installation on native
-  ARM64 and AMD64. Keep unexplained failures red. Restore Python 3.15 only after upstream resolves
+- Restore Python 3.15 only after upstream resolves
   its small-stack lazy-import crash; retain a native regression before enabling it.
-  Resolve the documented Python 3.14 deleted-libpython exclusion. Confirm the Go temporary-directory/Git HTTP fixes pass its suite.
+  Resolve the documented Python 3.14 deleted-libpython exclusion.
 - Establish official Java source/docs provenance before re-enabling updates.
   Review imported patches, licenses and corresponding-source/notices for all targets.
   Clarify aports recipe/patch reuse terms where no explicit file license is present;
   attribution alone is not a license grant.
 - Add independent publisher authentication for remaining checksum-only sources.
-- Verify live GitHub/GHCR publication, immutable revisions, fork checks, builder pin
-  PR and manifests/provenance.
+- Verify immutable-registry enforcement, fork checks and manifest provenance.
 - Exercise closed-PR/candidate cleanup and cache quarantine/GC with isolated live
   GHCR fixtures and concurrent publishers.
 - Verify failed-main manifest-only retries versus full reruns, including recovery of

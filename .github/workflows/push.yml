@@ -718,7 +718,7 @@ jobs:
         with:
           path: site
   docs-deploy:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: ${{ always() && !cancelled() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.docs-build.result == 'success' }}
     needs: docs-build
     runs-on: ubuntu-26.04
     timeout-minutes: 10

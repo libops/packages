@@ -211,8 +211,14 @@
     "config:best-practices",
     ":rebaseStalePrs"
   ],
+  "github-actions": {
+    "managerFilePatterns": [
+      "/^ci/push\\.yml\\.template$/"
+    ]
+  },
   "ignorePaths": [
-    "**/tests/**"
+    "**/tests/**",
+    ".github/workflows/push.yml"
   ],
   "packageRules": [
     {
@@ -223,6 +229,20 @@
         "*-source"
       ],
       "platformAutomerge": true
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "make dev-generate"
+        ],
+        "executionMode": "branch",
+        "fileFilters": [
+          ".github/workflows/push.yml"
+        ]
+      }
     },
     {
       "allowedVersions": "/^1\\.26\\.[0-9]+$/",

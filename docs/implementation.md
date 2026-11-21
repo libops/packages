@@ -88,16 +88,17 @@ loading, cleanup and unrelated targets remain usable.
 
 ## Verification limits
 
-Local Go checks exercise orchestration and artifact collection without requiring
-registry writes. They do not establish that every upstream test suite passes on
-every native architecture. Full native source/install testing, the GitHub/GHCR
-workflow, registry immutability settings and isolated live cleanup must be verified
-before production release. See the roadmap for the remaining source-authenticity,
-platform validation work.
+The current catalog's builds, configured upstream suites and installation checks
+have passed on native AMD64 and ARM64. Environment exclusions are documented in
+the CI standards; this is not a claim that every upstream assertion runs.
+GHCR publication, multi-architecture manifests and the builder-pin PR flow have
+been exercised live. Registry immutability settings, fork checks and isolated
+cleanup races remain in the roadmap, along with source-authenticity work.
 
 Local validation includes a native ARM64 Nginx build, separate upstream/install
 tests, direct carrier-file installation using signed indexes and checksum locks, and
-final-image inventory with Syft and Trivy.
+final-image inventory with Syft and Trivy. PHP 8.4's native ARM64 suite and default
+CLI/FPM/OPcache installation also pass.
 Both scanners detect the installed Nginx version; this does not validate advisory
-matching for every custom package. PHP 8.4/8.5/8.6 signatures and Python 3.12–3.15
+matching for every custom package. PHP 8.4/8.5/8.6 signatures and Python 3.12–3.14
 Sigstore verification have passed against their current upstream releases.

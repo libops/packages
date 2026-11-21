@@ -87,6 +87,12 @@ protected. `make registry-clean-cache` previews this; `DRY_RUN=0` applies it.
 [`queue: max`](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency);
 use `-ignore 'unexpected key "queue" for "concurrency" section'` for that one
 compatibility error. Do not suppress unrelated findings.
+The actionlint configuration explicitly recognizes the live-verified hosted
+`ubuntu-26.04` label until it is included in actionlint's built-in runner list.
+
+Renovate updates `ci/push.yml.template` as valid GitHub Actions YAML and runs
+`make dev-generate` afterward. The generated `push.yml` is excluded from direct
+dependency extraction. Commit the updated template and generated workflow together.
 
 The installation regression is a separate required job (`make dev-test-install`,
 25-minute timeout). Package builds depend only on planning and their parent
@@ -171,5 +177,7 @@ and the required checks pass. It refreshes registry-backed install tabs from the
 same commit and published manifests, then deploys Pages. There is no independent
 docs workflow that can race package publication. PRs never deploy docs. Run
 `make docs-build` locally for strict documentation validation.
+Both docs jobs explicitly tolerate skipped package ancestors and require their
+immediate gate to succeed; an unchanged target must not suppress Pages deployment.
 `make dev-test-install` executes the same named installer consumers use against
 an older-than-Alpine fixture and checks its carrier-only dependency.
