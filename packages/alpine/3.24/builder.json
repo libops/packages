@@ -1,4 +1,4 @@
 {
   "base": "alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b",
-  "image": "ghcr.io/libops/package-builder:alpine3.24@sha256:377739db34767e453f647cc074ded2f962490f714c20430d69abf6ddd7fbdf11"
+  "image": "ghcr.io/libops/package-builder:alpine3.24@sha256:b91c70944f772762de65c19cd25affb95dca449fb90ee0c652d2e52dbd21aef1"
 }
