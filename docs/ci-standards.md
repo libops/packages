@@ -142,6 +142,8 @@ all timezone, recursion and crash-report tests remain enabled.
 PHP's per-test timeout is 60 seconds. Its XML attribute memory-exhaustion test
 takes about 15 seconds on native ARM64; the former ten-second limit timed out
 before the expected memory-limit error. Keep the assertion enabled.
+All three PHP lines include upstream's INI-test fix: the no-config subprocess
+must not inherit `make test`'s temporary INI-file argument.
 
 
 Python exclusion lists apply to individual test names via upstream's `--ignorefile`;
