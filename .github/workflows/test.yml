@@ -1,0 +1,60 @@
+name: Test package
+on:
+  workflow_call:
+    inputs:
+      package:
+        required: true
+        type: string
+      context:
+        required: true
+        type: string
+      local-builder:
+        type: boolean
+        default: false
+      contexts:
+        type: string
+        default: ''
+      platforms:
+        required: true
+        type: string
+    secrets:
+      REGISTRY_USER:
+        required: false
+      REGISTRY_PASSWORD:
+        required: false
+permissions: {}
+jobs:
+  test:
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.platforms) }}
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+      packages: read
+    env:
+      LOCAL_BUILDER: ${{ inputs.local-builder && '1' || '' }}
+      TARGET: ${{ inputs.package }}
+      CONTEXTS: ${{ inputs.contexts }}
+      PACKAGE_REF: ${{ inputs.context }}
+      REPOSITORY: ${{ vars.repository || 'ghcr.io/libops' }}
+      ARCH: ${{ matrix.arch }}
+      PR: ${{ github.event.pull_request.number }}
+      REGISTRY_USER: ${{ secrets.REGISTRY_USER }}
+      REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Require the selected Go toolchain
+        run: echo 'GOTOOLCHAIN=local' >> "$GITHUB_ENV"
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - name: Check saved source build and published packages
+        run: make test

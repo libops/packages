@@ -1,0 +1,97 @@
+name: Packages
+on:
+  schedule:
+    - cron: '11 3 * * 0'
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      all:
+        description: Build all packages
+        type: boolean
+        default: false
+permissions: {}
+concurrency:
+  group: packages-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  plan:
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    outputs:
+      targets: ${{ steps.plan.outputs.targets }}
+      local-builder: ${{ steps.plan.outputs.local-builder }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Require the selected Go toolchain
+        run: echo 'GOTOOLCHAIN=local' >> "$GITHUB_ENV"
+      - name: Validate pipeline
+        run: |
+          make dev-check
+      - id: plan
+        env:
+          BEFORE: ${{ github.event.before }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          BUILD_ALL: ${{ github.event_name == 'schedule' || inputs.all || false }}
+        run: |
+          make --silent plan >> "$GITHUB_OUTPUT"
+  install-check:
+    needs: plan
+    if: needs.plan.outputs.targets != '[]'
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Require the selected Go toolchain
+        run: echo 'GOTOOLCHAIN=local' >> "$GITHUB_ENV"
+      - name: Test carrier selection against newer distro packages
+        run: make dev-test-install
+@@JOBS@@
+  required-checks:
+    timeout-minutes: 5
+    name: Required checks
+    if: ${{ always() }}
+    needs: [@@NEEDS@@]
+    runs-on: ubuntu-24.04
+    env:
+      RESULTS: ${{ toJSON(needs) }}
+      TARGETS: ${{ needs.plan.outputs.targets }}
+      FORK: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
+    steps:
+      - name: Check every selected build and test
+        run: |
+          if ! jq -e '.plan.result == "success"' <<< "$RESULTS" > /dev/null; then
+            echo '::error::Planning failed or was cancelled; see the plan job logs.'
+            exit 1
+          fi
+          if ! jq -en --arg targets "$TARGETS" '$targets | fromjson | type == "array" and all(.[]; type == "string")' > /dev/null 2>&1; then
+            echo '::error::Planning produced missing or invalid targets; expected a JSON array of target names.'
+            exit 1
+          fi
+          jq -e --argjson targets "$TARGETS" '
+            .plan.result == "success" and
+            (if ($targets | length) == 0 then .["install-check"].result == "skipped"
+             else .["install-check"].result == "success" end) and
+            all($targets[]; . as $target |
+              $ARGS.named.results["build-" + $target].result == "success" and
+              (($ARGS.named.fork == "true" and $ARGS.named.results["test-" + $target].result == "skipped") or
+               $ARGS.named.results["test-" + $target].result == "success"))
+          ' --arg fork "${FORK:-false}" --argjson results "$RESULTS" <<< "$RESULTS"

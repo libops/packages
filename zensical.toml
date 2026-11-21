@@ -1,0 +1,41 @@
+[project]
+site_name = "Packages"
+site_description = "Supported upstream packages for public-facing services."
+site_url = "https://libops.github.io/packages/"
+repo_url = "https://github.com/libops/packages"
+edit_uri = "edit/main/docs/"
+docs_dir = "docs"
+site_dir = "site"
+nav = [
+  {"Home" = "index.md"},
+  {"Use packages" = [
+    {"Package reference" = "packages.md"},
+    {"Installation and updates" = "consuming.md"},
+    {"Security and runtime scanning" = "security-metadata.md"},
+    {"License" = "license.md"},
+  ]},
+  {"Support the project" = [
+    {"Sponsorship" = "sponsorship.md"},
+    {"Maintainers and ownership" = "maintainers.md"},
+  ]},
+  {"Maintain libops/packages" = [
+    {"Implementation guide" = "implementation.md"},
+    {"Decisions" = "decisions.md"},
+    {"Pipeline" = "pipeline.md"},
+    {"Pipeline tooling" = "pipeline-tools.md"},
+    {"First release" = "first-release.md"},
+    {"Add a package" = "guides/add-package.md"},
+    {"Add an OS / package repository" = "guides/add-os.md"},
+    {"Add a CPU architecture" = "guides/add-architecture.md"},
+    {"CI standards" = "ci-standards.md"},
+    {"Go build helpers" = "build-helpers.md"},
+    {"Documentation" = "documentation.md"},
+    {"Roadmap" = "roadmap.md"},
+  ]},
+]
+
+[project.theme]
+features = ["navigation.sections", "navigation.top", "content.code.copy", "content.action.edit"]
+
+[project.theme.icon]
+repo = "fontawesome/brands/github"

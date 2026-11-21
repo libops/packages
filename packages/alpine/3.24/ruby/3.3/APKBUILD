@@ -1,0 +1,38 @@
+maintainer="LibOps <libops@users.noreply.github.com>"
+# Official Ruby source; no downstream source patches.
+pkgname=ruby33
+pkgver=3.3.14
+pkgrel=6
+pkgdesc="Ruby 3.3"
+url="https://www.ruby-lang.org/"
+arch="all"
+license="Ruby BSD-2-Clause"
+subpackages="$pkgname-doc"
+checkdepends="bash tzdata"
+makedepends="autoconf bison gdbm-dev libffi-dev linux-headers ncurses-dev openssl-dev readline-dev yaml-dev zlib-dev"
+source="https://cache.ruby-lang.org/pub/ruby/3.3/ruby-$pkgver.tar.gz"
+builddir="$srcdir/ruby-$pkgver"
+
+build() {
+    ./configure --build=$CBUILD --host=$CHOST --prefix=/usr \
+        --enable-shared --disable-install-doc --disable-yjit
+    make
+}
+
+check() {
+    # Bootstrap stack probes require the normal runtime defaults.
+    unset RUBY_THREAD_VM_STACK_SIZE RUBY_THREAD_MACHINE_STACK_SIZE
+    make test
+    # Recursive upstream cases need more stack than musl's small defaults.
+    export RUBY_THREAD_VM_STACK_SIZE=4194304
+    export RUBY_THREAD_MACHINE_STACK_SIZE=4194304
+    # This assertion expects glibc's libc.so, not musl's dynamic loader name.
+    make test-all TESTOPTS='--name=!/^test_dlopen_linker_script_group_linux$/'
+}
+
+package() {
+    make DESTDIR="$pkgdir" install
+    install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
+
+sha512sums="d6c3599266d441b00659c7a6eafdc5cc2b5d5b57daa0aba6a22710a2be75bf9a9de9387b8de3734f40fea6591da0bd957ae0e2363758287bc403fe8006a5b224  ruby-3.3.14.tar.gz"

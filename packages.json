@@ -1,0 +1,330 @@
+{
+  "alpine-3-24-php-8-4": {
+    "test": "php84",
+    "dependencies": [],
+    "upstream": "https://www.php.net/supported-versions.php",
+    "supported_until": "2028-12-31",
+    "family": "php",
+    "line": "8.4",
+    "update": {
+      "datasource": "github-tags",
+      "package": "php/php-src",
+      "allowed": "/^8\\.4\\.[0-9]+$/",
+      "extract": "^php-(?<version>8\\.4\\.[0-9]+)$"
+    },
+    "target": "alpine/3.24/php/8.4",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "alpine-3-24-nginx-1-30": {
+    "test": "nginx",
+    "dependencies": [],
+    "upstream": "https://nginx.org/en/download.html",
+    "supported_until": "2027-01-08",
+    "family": "nginx",
+    "line": "1.30",
+    "update": {
+      "datasource": "github-tags",
+      "package": "nginx/nginx",
+      "allowed": "/^1\\.30\\.[0-9]+$/",
+      "extract": "^release-(?<version>1\\.30\\.[0-9]+)$"
+    },
+    "target": "alpine/3.24/nginx/1.30",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "support_deadline_note": "Project review deadline, not an upstream EOL promise. Recheck the cited upstream policy before extending."
+  },
+  "alpine-3-24-java-21": {
+    "test": "openjdk21",
+    "dependencies": [],
+    "upstream": "https://github.com/openjdk/jdk21u",
+    "supported_until": "2027-01-15",
+    "family": "openjdk",
+    "line": "21",
+    "update": {
+      "datasource": "github-tags",
+      "package": "openjdk/jdk21u",
+      "allowed": "/^jdk-21\\.[0-9]+\\.[0-9]+(?:\\.[0-9]+)?-ga$/",
+      "tag": true,
+      "versioning": "regex:^jdk-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:\\.(?<build>\\d+))?-ga$"
+    },
+    "target": "alpine/3.24/java/21",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "support_deadline_note": "Project review deadline, not an upstream EOL promise. Recheck the cited upstream policy before extending."
+  },
+  "alpine-3-24-imagemagick-7": {
+    "test": "imagemagick",
+    "dependencies": [],
+    "upstream": "https://imagemagick.org/",
+    "supported_until": "2027-02-05",
+    "family": "imagemagick",
+    "line": "7",
+    "update": {
+      "datasource": "github-tags",
+      "package": "ImageMagick/ImageMagick",
+      "allowed": "/^7\\.[0-9]+\\.[0-9]+-[0-9]+$/",
+      "tag": true,
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>\\d+)$"
+    },
+    "target": "alpine/3.24/imagemagick/7",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "support_deadline_note": "Project review deadline, not an upstream EOL promise. Recheck the cited upstream policy before extending."
+  },
+  "alpine-3-24-leptonica-1": {
+    "test": "leptonica",
+    "dependencies": [],
+    "upstream": "https://github.com/DanBloomberg/leptonica",
+    "supported_until": "2027-02-12",
+    "family": "leptonica",
+    "line": "1",
+    "update": {
+      "datasource": "github-releases",
+      "package": "DanBloomberg/leptonica",
+      "allowed": "/^1\\.[0-9]+\\.[0-9]+$/"
+    },
+    "target": "alpine/3.24/leptonica/1",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "support_deadline_note": "Project review deadline, not an upstream EOL promise. Recheck the cited upstream policy before extending."
+  },
+  "alpine-3-24-php-8-5": {
+    "test": "php85",
+    "dependencies": [],
+    "upstream": "https://www.php.net/supported-versions.php",
+    "supported_until": "2029-12-31",
+    "family": "php",
+    "line": "8.5",
+    "update": {
+      "datasource": "github-tags",
+      "package": "php/php-src",
+      "allowed": "/^8\\.5\\.[0-9]+$/",
+      "extract": "^php-(?<version>8\\.5\\.[0-9]+)$"
+    },
+    "target": "alpine/3.24/php/8.5",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "alpine-3-24-php-8-6": {
+    "test": "php86",
+    "dependencies": [],
+    "upstream": "https://www.php.net/supported-versions.php",
+    "supported_until": "2030-12-31",
+    "family": "php",
+    "line": "8.6",
+    "update": {
+      "datasource": "github-tags",
+      "package": "php/php-src",
+      "allowed": "/^8\\.6\\.[0-9]+$/",
+      "extract": "^php-(?<version>8\\.6\\.[0-9]+)$"
+    },
+    "target": "alpine/3.24/php/8.6",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "alpine-3-24-java-25": {
+    "test": "openjdk25",
+    "dependencies": [],
+    "upstream": "https://github.com/openjdk/jdk25u",
+    "supported_until": "2027-01-22",
+    "family": "openjdk",
+    "line": "25",
+    "update": {
+      "datasource": "github-tags",
+      "package": "openjdk/jdk25u",
+      "allowed": "/^jdk-25\\.[0-9]+\\.[0-9]+(?:\\.[0-9]+)?-ga$/",
+      "tag": true,
+      "versioning": "regex:^jdk-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:\\.(?<build>\\d+))?-ga$"
+    },
+    "target": "alpine/3.24/java/25",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "support_deadline_note": "Project review deadline, not an upstream EOL promise. Recheck the cited upstream policy before extending."
+  },
+  "alpine-3-24-python-3-12": {
+    "test": "python312",
+    "dependencies": [],
+    "upstream": "https://devguide.python.org/versions/",
+    "supported_until": "2028-10-01",
+    "family": "python",
+    "line": "3.12",
+    "update": {
+      "datasource": "python-version",
+      "package": "python",
+      "allowed": "/^3\\.12\\.[0-9]+$/",
+      "versioning": "pep440"
+    },
+    "target": "alpine/3.24/python/3.12",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "source_identity": {
+      "issuer": "https://accounts.google.com",
+      "subject": "thomas@python.org",
+      "reference": "https://www.python.org/downloads/metadata/sigstore/"
+    }
+  },
+  "alpine-3-24-python-3-13": {
+    "test": "python313",
+    "dependencies": [],
+    "upstream": "https://devguide.python.org/versions/",
+    "supported_until": "2029-10-01",
+    "family": "python",
+    "line": "3.13",
+    "update": {
+      "datasource": "python-version",
+      "package": "python",
+      "allowed": "/^3\\.13\\.[0-9]+$/",
+      "versioning": "pep440"
+    },
+    "target": "alpine/3.24/python/3.13",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "source_identity": {
+      "issuer": "https://accounts.google.com",
+      "subject": "thomas@python.org",
+      "reference": "https://www.python.org/downloads/metadata/sigstore/"
+    }
+  },
+  "alpine-3-24-python-3-14": {
+    "test": "python314",
+    "dependencies": [],
+    "upstream": "https://devguide.python.org/versions/",
+    "supported_until": "2030-10-01",
+    "family": "python",
+    "line": "3.14",
+    "update": {
+      "datasource": "python-version",
+      "package": "python",
+      "allowed": "/^3\\.14\\.[0-9]+$/",
+      "versioning": "pep440"
+    },
+    "target": "alpine/3.24/python/3.14",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "source_identity": {
+      "issuer": "https://github.com/login/oauth",
+      "subject": "hugo@python.org",
+      "reference": "https://www.python.org/downloads/metadata/sigstore/"
+    }
+  },
+  "alpine-3-24-ruby-3-3": {
+    "test": "ruby33",
+    "dependencies": [],
+    "upstream": "https://www.ruby-lang.org/en/downloads/branches/",
+    "supported_until": "2027-03-31",
+    "family": "ruby",
+    "line": "3.3",
+    "update": {
+      "datasource": "ruby-version",
+      "package": "ruby",
+      "allowed": "/^3\\.3\\.[0-9]+$/",
+      "versioning": "ruby"
+    },
+    "target": "alpine/3.24/ruby/3.3",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "alpine-3-24-ruby-3-4": {
+    "test": "ruby34",
+    "dependencies": [],
+    "upstream": "https://www.ruby-lang.org/en/downloads/branches/",
+    "supported_until": "2028-03-31",
+    "family": "ruby",
+    "line": "3.4",
+    "update": {
+      "datasource": "ruby-version",
+      "package": "ruby",
+      "allowed": "/^3\\.4\\.[0-9]+$/",
+      "versioning": "ruby"
+    },
+    "target": "alpine/3.24/ruby/3.4",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "support_deadline_note": "Security-maintenance end in the upstream release-engineering schedule: https://github.com/ruby/ruby/wiki/Release-Engineering"
+  },
+  "alpine-3-24-ruby-4-0": {
+    "test": "ruby40",
+    "dependencies": [],
+    "upstream": "https://www.ruby-lang.org/en/downloads/branches/",
+    "supported_until": "2029-03-31",
+    "family": "ruby",
+    "line": "4.0",
+    "update": {
+      "datasource": "ruby-version",
+      "package": "ruby",
+      "allowed": "/^4\\.0\\.[0-9]+$/",
+      "versioning": "ruby"
+    },
+    "target": "alpine/3.24/ruby/4.0",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "support_deadline_note": "Security-maintenance end in the upstream release-engineering schedule: https://github.com/ruby/ruby/wiki/Release-Engineering"
+  },
+  "alpine-3-24-go-1-27": {
+    "test": "go127",
+    "dependencies": [],
+    "upstream": "https://go.dev/doc/devel/release#policy",
+    "supported_until": "2027-06-25",
+    "family": "go",
+    "line": "1.27",
+    "update": {
+      "datasource": "golang-version",
+      "package": "go",
+      "allowed": "/^1\\.27\\.[0-9]+$/"
+    },
+    "target": "alpine/3.24/go/1.27",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "support_deadline_note": "Review deadline before the expected Go 1.29 release, not a fixed upstream EOL. Upstream support ends when Go 1.29 ships: https://go.dev/doc/devel/release#policy"
+  },
+  "alpine-3-24-go-1-26": {
+    "test": "go126",
+    "dependencies": [],
+    "upstream": "https://go.dev/doc/devel/release#policy",
+    "supported_until": "2027-01-29",
+    "family": "go",
+    "line": "1.26",
+    "update": {
+      "datasource": "golang-version",
+      "package": "go",
+      "allowed": "/^1\\.26\\.[0-9]+$/"
+    },
+    "target": "alpine/3.24/go/1.26",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "support_deadline_note": "Review deadline before the expected Go 1.28 release, not a fixed upstream EOL. Upstream support ends when Go 1.28 ships: https://go.dev/doc/devel/release#policy"
+  }
+}
