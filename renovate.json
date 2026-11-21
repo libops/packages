@@ -240,7 +240,8 @@
         ],
         "executionMode": "branch",
         "fileFilters": [
-          ".github/workflows/push.yml"
+          ".github/workflows/push.yml",
+          ".github/actionlint.yaml"
         ]
       }
     },

@@ -87,12 +87,14 @@ protected. `make registry-clean-cache` previews this; `DRY_RUN=0` applies it.
 [`queue: max`](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency);
 use `-ignore 'unexpected key "queue" for "concurrency" section'` for that one
 compatibility error. Do not suppress unrelated findings.
-The actionlint configuration explicitly recognizes the live-verified hosted
-`ubuntu-26.04` label until it is included in actionlint's built-in runner list.
+`make dev-generate` derives actionlint's additional versioned Ubuntu, Windows and
+macOS hosted labels from the workflows, so newer runner releases do not require a
+second manual version list. Custom runner labels still require explicit review.
 
 Renovate updates `ci/push.yml.template` as valid GitHub Actions YAML and runs
 `make dev-generate` afterward. The generated `push.yml` is excluded from direct
-dependency extraction. Commit the updated template and generated workflow together.
+dependency extraction. Commit the updated template, generated workflow and
+generated `.github/actionlint.yaml` together.
 
 The installation regression is a separate required job (`make dev-test-install`,
 25-minute timeout). Package builds depend only on planning and their parent

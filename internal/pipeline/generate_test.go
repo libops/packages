@@ -337,3 +337,33 @@ func TestWorkflowTemplateIsValidYAML(t *testing.T) {
 		t.Fatalf("Renovate must be able to parse the source template: %v", err)
 	}
 }
+
+func TestWorkflowLintLabelsFollowRunnerUpdates(t *testing.T) {
+	root := t.TempDir()
+	dir := root + "/.github/workflows"
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(dir+"/push.yml", []byte("runs-on: ubuntu-20.04\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(dir+"/test.yml", []byte("  runs-on: ubuntu-28.04-arm\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	workflow := "  runs-on: 'ubuntu-28.04'\n  runs-on: windows-2028\n  runs-on: ubuntu-28.04\n  runs-on: unreviewed-custom-runner\n"
+	data, err := workflowLintConfig(root, workflow)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var config struct {
+		Runner struct {
+			Labels []string `yaml:"labels"`
+		} `yaml:"self-hosted-runner"`
+	}
+	if err := yaml.Unmarshal(data, &config); err != nil {
+		t.Fatal(err)
+	}
+	if strings.Join(config.Runner.Labels, ",") != "ubuntu-28.04,ubuntu-28.04-arm,windows-2028" {
+		t.Fatal(config.Runner.Labels)
+	}
+}
