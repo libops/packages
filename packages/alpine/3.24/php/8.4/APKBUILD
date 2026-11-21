@@ -28,7 +28,7 @@
 maintainer="LibOps <libops@users.noreply.github.com>"
 pkgname=php84
 pkgver=8.4.28
-pkgrel=3
+pkgrel=4
 _apiver=20240924
 _suffix=${pkgname#php}
 # Is this package the default (latest) PHP version?
@@ -411,7 +411,7 @@ check() {
 	esac
 
 	TESTS="${TESTS:- --show-diff }" NO_INTERACTION=1 REPORT_EXIT_STATUS=1 \
-		SKIP_SLOW_TESTS=1 SKIP_ONLINE_TESTS=1 TEST_TIMEOUT=10 \
+		SKIP_SLOW_TESTS=1 SKIP_ONLINE_TESTS=1 TEST_TIMEOUT=60 \
 		SKIP_PERF_SENSITIVE=1 \
 		TZ='' LANG='' LC_ALL='' TEST_FPM_EXTENSION_DIR=modules \
 		TRAVIS=true SKIP_IO_CAPTURE_TESTS=1 \

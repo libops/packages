@@ -126,7 +126,9 @@ GitHub runners. The same runner limitation is documented in the
 [kernel signal-stack fix](https://lore-kernel.gnuweeb.org/lkml/3c2lpv75qz67rkcirawgfcd63pazgur6tw6qp7m6z5tdfimeeh%40v2em57j4ix6e/T/).
 These are exact test-name exclusions, not package/suite skips; ARM64 keeps the
 signal-stack tests. Review them when upstream fixtures or the runner environment
-change. Source code and compiler output receive no downstream patch.
+change. Go's `dist` runner clears `GOFLAGS`, so affected packages run separately
+with `go test -skip`; all remaining dist tests and compiler/linker variants stay
+enabled. Source code and compiler output receive no downstream patch.
 
 
 Ruby uses Alpine aports compiler settings, libucontext, and its checksum-pinned
@@ -136,6 +138,10 @@ suites use normal runtime stack defaults.
 Ruby 3.3/3.4 exclude only `test_dlopen_linker_script_group_linux`: its expected
 `libc.so` name differs from musl's `ld-musl-<arch>.so`. Other Fiddle tests and
 all timezone, recursion and crash-report tests remain enabled.
+
+PHP's per-test timeout is 60 seconds. Its XML attribute memory-exhaustion test
+takes about 15 seconds on native ARM64; the former ten-second limit timed out
+before the expected memory-limit error. Keep the assertion enabled.
 
 
 Python exclusion lists apply to individual test names via upstream's `--ignorefile`;

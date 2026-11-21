@@ -2,7 +2,7 @@ maintainer="LibOps <libops@users.noreply.github.com>"
 # Official Go source; no downstream source patches.
 pkgname=go127
 pkgver=1.27.4
-pkgrel=4
+pkgrel=5
 pkgdesc="Go 1.27 toolchain for public-facing services"
 url="https://go.dev/"
 arch="x86_64 aarch64"
@@ -31,14 +31,20 @@ check() {
     # Alpine also excludes TSAN: it needs ASLR controls denied by containers.
     # Keep all other sanitizer cases and the rest of the upstream suite.
     local excluded='^TestTSAN$'
+    local packages='cmd/cgo/internal/testsanitizers'
     if [ "$CARCH" = x86_64 ]; then
         # musl's fixed SIGSTKSZ is too small on newer GitHub AMD64 kernels.
         # These two C fixtures abort before testing Go; see CI standards.
         excluded='^(TestTSAN|TestSigStackSwapping|TestSigaltstack)$'
+        packages="$packages runtime cmd/cgo/internal/test"
     fi
-    export GOFLAGS="${GOFLAGS:+$GOFLAGS }-skip=$excluded"
     cd src
-    ./run.bash --no-rebuild
+    # dist clears GOFLAGS. Run these packages directly with exact exclusions;
+    # keep every other dist test and its compiler/linker variants enabled.
+    local dist_excluded
+    dist_excluded="$(printf '%s' "$packages" | tr ' ' '|')"
+    ./run.bash --no-rebuild -run="!^($dist_excluded)$" || return 1
+    ../bin/go test -count=1 -short -timeout=10m -skip="$excluded" $packages
 }
 
 package() {
