@@ -1,0 +1,35 @@
+name: "Bug report"
+description: "Report a build, package, installation, update or pipeline problem."
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: "Search existing issues first. Remove credentials and private data from logs. If available, include an immutable image digest and workflow run link."
+  - type: textarea
+    id: problem
+    attributes:
+      label: "What happened?"
+      description: "Describe the problem and expected behavior."
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: "Affected target and environment"
+      description: "Include package/version, distro release, architecture, image tag/digest or Git commit, and relevant tool versions."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: "Steps to reproduce"
+      description: "Provide the commands or minimal configuration needed to reproduce the issue."
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "Logs and links"
+      description: "Attach relevant sanitized output and workflow links."
+    validations:
+      required: false

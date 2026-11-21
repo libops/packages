@@ -1,0 +1,22 @@
+name: Weekly validation alert
+on:
+  workflow_run:
+    workflows: [Packages]
+    types: [completed]
+permissions: {}
+jobs:
+  report:
+    if: github.event.workflow_run.event == 'schedule' && github.event.workflow_run.conclusion == 'failure'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RUN_URL: ${{ github.event.workflow_run.html_url }}
+      RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
+    steps:
+      - name: Open a shared validation incident
+        run: |
+          gh issue create --title "Weekly package validation failed (run $RUN_NUMBER)" --body "Weekly validation failed: $RUN_URL. Review failed package/architecture jobs and runner costs before retrying. This validation run does not promote release tags."

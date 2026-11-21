@@ -1,0 +1,488 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "branchConcurrentLimit": 0,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "datasourceTemplate": "golang-version",
+      "depNameTemplate": "alpine-3-24-go-1-26-source",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/go/1\\.26/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "go",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "golang-version",
+      "depNameTemplate": "alpine-3-24-go-1-27-source",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/go/1\\.27/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "go",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "alpine-3-24-imagemagick-7-source",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/imagemagick/7/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)# upstream-tag=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "ImageMagick/ImageMagick",
+      "versioningTemplate": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<build>\\d+)$"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "alpine-3-24-leptonica-1-source",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/leptonica/1/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "DanBloomberg/leptonica",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "alpine-3-24-nginx-1-30-source",
+      "extractVersionTemplate": "^release-(?<version>1\\.30\\.[0-9]+)$",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/nginx/1\\.30/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "nginx/nginx",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "alpine-3-24-php-8-4-source",
+      "extractVersionTemplate": "^php-(?<version>8\\.4\\.[0-9]+)$",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/php/8\\.4/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "php/php-src",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "alpine-3-24-php-8-5-source",
+      "extractVersionTemplate": "^php-(?<version>8\\.5\\.[0-9]+)$",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/php/8\\.5/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "php/php-src",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "alpine-3-24-php-8-6-source",
+      "extractVersionTemplate": "^php-(?<version>8\\.6\\.[0-9]+)$",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/php/8\\.6/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "php/php-src",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "python-version",
+      "depNameTemplate": "alpine-3-24-python-3-12-source",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/python/3\\.12/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "python",
+      "versioningTemplate": "pep440"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "python-version",
+      "depNameTemplate": "alpine-3-24-python-3-13-source",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/python/3\\.13/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "python",
+      "versioningTemplate": "pep440"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "python-version",
+      "depNameTemplate": "alpine-3-24-python-3-14-source",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/python/3\\.14/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "python",
+      "versioningTemplate": "pep440"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "ruby-version",
+      "depNameTemplate": "alpine-3-24-ruby-3-3-source",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/ruby/3\\.3/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "ruby",
+      "versioningTemplate": "ruby"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "ruby-version",
+      "depNameTemplate": "alpine-3-24-ruby-3-4-source",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/ruby/3\\.4/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "ruby",
+      "versioningTemplate": "ruby"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "ruby-version",
+      "depNameTemplate": "alpine-3-24-ruby-4-0-source",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/ruby/4\\.0/APKBUILD$/"
+      ],
+      "matchStrings": [
+        "(?:^|\\n)pkgver=(?<currentValue>[^\\s]+)"
+      ],
+      "packageNameTemplate": "ruby",
+      "versioningTemplate": "ruby"
+    },
+    {
+      "customType": "regex",
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "alpine-3.24-base",
+      "managerFilePatterns": [
+        "/^packages/alpine/3\\.24/base-image\\.txt$/"
+      ],
+      "matchStrings": [
+        "alpine:(?<currentValue>[^@\\s]+)@(?<currentDigest>sha256:[a-f0-9]+)"
+      ],
+      "packageNameTemplate": "alpine"
+    }
+  ],
+  "enabledManagers": [
+    "custom.regex",
+    "github-actions",
+    "dockerfile",
+    "gomod"
+  ],
+  "extends": [
+    "config:best-practices",
+    ":rebaseStalePrs"
+  ],
+  "ignorePaths": [
+    "**/tests/**"
+  ],
+  "packageRules": [
+    {
+      "automerge": false,
+      "automergeType": "pr",
+      "ignoreUnstable": true,
+      "matchDepNames": [
+        "*-source"
+      ],
+      "platformAutomerge": true
+    },
+    {
+      "allowedVersions": "/^1\\.26\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-go-1-26-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-go-1-26"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/go/1.26/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^1\\.27\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-go-1-27-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-go-1-27"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/go/1.27/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^7\\.[0-9]+\\.[0-9]+-[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-imagemagick-7-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-imagemagick-7"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/imagemagick/7/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^1\\.[0-9]+\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-leptonica-1-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-leptonica-1"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/leptonica/1/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^1\\.30\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-nginx-1-30-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-nginx-1-30"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/nginx/1.30/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^8\\.4\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-php-8-4-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-php-8-4"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/php/8.4/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^8\\.5\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-php-8-5-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-php-8-5"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/php/8.5/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^8\\.6\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-php-8-6-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-php-8-6"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/php/8.6/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^3\\.12\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-python-3-12-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-python-3-12"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/python/3.12/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^3\\.13\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-python-3-13-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-python-3-13"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/python/3.13/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^3\\.14\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-python-3-14-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-python-3-14"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/python/3.14/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^3\\.3\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-ruby-3-3-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-ruby-3-3"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/ruby/3.3/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^3\\.4\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-ruby-3-4-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-ruby-3-4"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/ruby/3.4/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^4\\.0\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3-24-ruby-4-0-source"
+      ],
+      "minimumReleaseAge": null,
+      "postUpgradeTasks": {
+        "commands": [
+          "make update TARGET=alpine-3-24-ruby-4-0"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/ruby/4.0/**"
+        ]
+      },
+      "schedule": []
+    },
+    {
+      "allowedVersions": "/^3\\.24\\.[0-9]+$/",
+      "matchDepNames": [
+        "alpine-3.24-base"
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "make revise-base TARGET=alpine/3.24"
+        ],
+        "fileFilters": [
+          "packages/alpine/3.24/**"
+        ]
+      }
+    },
+    {
+      "allowedVersions": "/^1\\.27\\.[0-9]+-alpine3\\.24$/",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "golang",
+        "docker.io/library/golang"
+      ]
+    },
+    {
+      "allowedVersions": "/^3\\.13\\.[0-9]+-slim-bookworm$/",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "python",
+        "docker.io/library/python"
+      ]
+    }
+  ],
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 0
+}

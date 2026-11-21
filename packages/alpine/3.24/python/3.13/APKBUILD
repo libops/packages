@@ -1,0 +1,39 @@
+maintainer="LibOps <libops@users.noreply.github.com>"
+# Official CPython source; no downstream source patches.
+pkgname=python313
+pkgver=3.13.18
+pkgrel=4
+pkgdesc="CPython 3.13"
+url="https://www.python.org/"
+arch="all"
+license="PSF-2.0"
+subpackages="$pkgname-doc $pkgname-pyc"
+provides="python3=$pkgver-r$pkgrel"
+# Upstream profiler tests inspect /proc/PID/exe and require GNU sleep, not BusyBox.
+checkdepends="coreutils"
+makedepends="bzip2-dev expat-dev gdbm-dev libffi-dev linux-headers ncurses-dev openssl-dev readline-dev sqlite-dev xz-dev zlib-dev"
+source="https://www.python.org/ftp/python/$pkgver/Python-$pkgver.tar.xz"
+builddir="$srcdir/Python-$pkgver"
+
+build() {
+    # Match Alpine's musl stack sizing and keep interpreter-only flags out of
+    # extension build configuration. No downstream Python source patches.
+    export CFLAGS_NODIST="$CFLAGS -O2 -DTHREAD_STACK_SIZE=0x200000"
+    export CXXFLAGS_NODIST="$CXXFLAGS -O2"
+    export LDFLAGS_NODIST="$LDFLAGS -Wl,-z,stack-size=0x200000"
+    unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS
+    ./configure --build=$CBUILD --host=$CHOST --prefix=/usr \
+        --enable-shared --with-ensurepip=install --with-system-expat
+    make
+}
+
+check() {
+    make test TESTOPTS="--timeout 600 -j2 --ignorefile $startdir/test-exclusions.list"
+}
+
+package() {
+    make DESTDIR="$pkgdir" install
+    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
+sha512sums="ef5cd2e1f31411cddb0f1ee8fe64cdcd94b6a3ab260d42e57182859d45345f447b0c0b0be0cd3302fad653e919af39881cd8368e0cb7932df6d90999b5335953  Python-3.13.18.tar.xz"

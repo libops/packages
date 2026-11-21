@@ -1,0 +1,20 @@
+Third-party attribution
+
+LibOps packages builds on the work of Alpine Linux and the contributors and
+maintainers of the aports packaging repository:
+https://gitlab.alpinelinux.org/alpine/aports
+https://github.com/alpinelinux/aports
+
+Package recipes, build settings and downstream compatibility patches in this
+repository include adaptations from aports. Credit belongs to their original
+authors, including the contributors identified in recipe comments and aports
+version history. Retained contributor credits describe the original work;
+LibOps maintains the packages built and published by this repository.
+
+The reviewed aports tree does not declare a repository-wide license. APKBUILD
+license fields describe the packaged software, not a blanket license for the
+aports tree. Third-party files retain their applicable upstream licenses and
+notices; this attribution does not relicense them or supply a license grant.
+
+The MIT license in LICENSE covers original LibOps work. Packaged software,
+third-party recipes, patches and dependencies retain their own licenses.

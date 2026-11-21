@@ -1,0 +1,23 @@
+FROM builder AS build
+ARG EXPECTED_BASE_IMAGE
+ARG PACKAGE_TARGET
+ARG SOURCE_VERSION
+ARG SOURCE_ALGORITHM
+ARG SOURCE_CHECKSUM
+ARG SOURCE_ARCHIVE
+ARG RECIPE_DIR
+COPY --chown=builder:abuild ${RECIPE_DIR}/ /home/builder/aports/package/
+COPY --chown=builder:abuild NOTICE /home/builder/aports/package/APORTS-NOTICE
+RUN packages build-apk
+
+FROM build AS test
+RUN abuild check
+
+FROM scratch AS packages
+COPY --from=build /home/builder/apks /packages
+COPY --from=build /etc/apk/keys /keys
+COPY --from=build /etc/apk/keys /packages/keys
+COPY --from=build /home/builder/metadata /metadata
+COPY --from=build /home/builder/sources /sources
+COPY LICENSE NOTICE /packages/
+COPY LICENSE NOTICE /licenses/libops-packages/

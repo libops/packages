@@ -1,0 +1,37 @@
+name: CPU architecture support
+description: Request or offer maintenance, hardware or sponsorship for a CPU architecture.
+title: "[Architecture]: "
+body:
+  - type: textarea
+    id: scope
+    attributes:
+      label: CPU architecture and support scope
+      description: Name the CPU/variant, OS releases and package release lines you need.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Upstream and platform compatibility
+      description: Link upstream support, base images and bootstrap toolchains, and describe native validation requirements.
+    validations:
+      required: true
+  - type: dropdown
+    id: commitment
+    attributes:
+      label: How could you help maintain this architecture?
+      options:
+        - Maintain the agreed targets
+        - Sponsor hardware and ongoing support
+        - Maintain and sponsor support
+        - Discuss contributing native hardware or runners
+        - Request only for now
+    validations:
+      required: true
+  - type: textarea
+    id: resources
+    attributes:
+      label: Hardware, maintenance or sponsorship proposal
+      description: Describe native runner capacity, hosting, isolation, ongoing availability or public funding scope. Do not include credentials or private details.
+    validations:
+      required: false

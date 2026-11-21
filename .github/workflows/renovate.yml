@@ -1,0 +1,54 @@
+name: Renovate
+on:
+  workflow_dispatch:
+  schedule:
+    # UTC: every 15 minutes during the broad European/US weekday release window.
+    # Offset from the hour to avoid GitHub's busiest scheduling period.
+    - cron: '7,22,37,52 7-23 * * 1-5'
+    # Hourly outside that window, including weekends.
+    - cron: '37 0-6 * * 1-5'
+    - cron: '37 * * * 0,6'
+permissions: {}
+concurrency:
+  group: renovate
+  cancel-in-progress: false
+jobs:
+  update:
+    permissions:
+      contents: read
+    runs-on: ${{ vars.RENOVATE_RUNNER || 'ubuntu-24.04' }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Require the selected Go toolchain
+        run: echo 'GOTOOLCHAIN=local' >> "$GITHUB_ENV"
+      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        id: app
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIV_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+      - name: Compile the shared Go updater
+        run: make dev-build
+      - name: Check upstream releases
+        env:
+          RENOVATE_TOKEN: ${{ steps.app.outputs.token }}
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+        run: |
+          RENOVATE_ALLOWED_COMMANDS="$(cat ci/renovate-allowed-commands.json)"
+          export RENOVATE_ALLOWED_COMMANDS
+          docker run --rm \
+            -v "$PWD/build/packages:/usr/local/bin/packages:ro" \
+            -e RENOVATE_CUSTOM_ENV_VARIABLES='{"PACKAGES_CLI":"/usr/local/bin/packages"}' \
+            -e RENOVATE_BASE_DIR=/tmp/renovate \
+            -e RENOVATE_PLATFORM=github \
+            -e RENOVATE_TOKEN -e RENOVATE_REPOSITORIES -e RENOVATE_ALLOWED_COMMANDS \
+            renovate/renovate:44.257.0@sha256:a8a60308419c2ed2b88c68ba4cc22fc22b06f89e4c0a62b664d9514509fa0462

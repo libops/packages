@@ -1,0 +1,93 @@
+name: Build distro utilities
+on:
+  workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
+      platforms:
+        required: true
+        type: string
+    secrets:
+      GH_APP_ID:
+        required: true
+      GH_APP_PRIV_KEY:
+        required: true
+      REGISTRY_USER:
+        required: false
+      REGISTRY_PASSWORD:
+        required: false
+permissions: {}
+jobs:
+  build:
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.platforms) }}
+    runs-on: ${{ matrix.runner }}
+    env:
+      TARGET: ${{ inputs.target }}
+      ARCH: ${{ matrix.arch }}
+      REPOSITORY: ${{ vars.repository || 'ghcr.io/libops' }}
+      REGISTRY_USER: ${{ secrets.REGISTRY_USER }}
+      REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Require the selected Go toolchain
+        run: echo 'GOTOOLCHAIN=local' >> "$GITHUB_ENV"
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - name: Verify helper code and pins
+        run: make dev-check
+      - name: Publish this builder architecture
+        run: make builder-build PUBLISH=1
+  publish:
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write
+    needs: build
+    runs-on: ubuntu-24.04
+    env:
+      TARGET: ${{ inputs.target }}
+      REPOSITORY: ${{ vars.repository || 'ghcr.io/libops' }}
+      REGISTRY_USER: ${{ secrets.REGISTRY_USER }}
+      REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Require the selected Go toolchain
+        run: echo 'GOTOOLCHAIN=local' >> "$GITHUB_ENV"
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
+      - name: Publish the builder manifest
+        id: manifest
+        run: make builder-manifest
+      - name: Create lbops-renovate token for the pin PR
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        id: app
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIV_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+      - name: Open the digest pin update
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          DIGEST: ${{ steps.manifest.outputs.digest }}
+        run: make builder-pin REPORT=1

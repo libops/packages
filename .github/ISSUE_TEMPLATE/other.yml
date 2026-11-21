@@ -1,0 +1,21 @@
+name: "Question, idea or other request"
+description: "Ask for help or suggest something outside the other categories."
+title: ""
+body:
+  - type: markdown
+    attributes:
+      value: "Use this form for consumption questions, feature ideas and anything the other forms do not cover. Do not include credentials or private information."
+  - type: textarea
+    id: request
+    attributes:
+      label: "Question or proposal"
+      description: "Describe the question, improvement or request."
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: "Context"
+      description: "Optional: include relevant targets, examples, links or alternatives considered."
+    validations:
+      required: false

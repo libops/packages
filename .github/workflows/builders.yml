@@ -1,0 +1,62 @@
+name: Build utility images
+on:
+  push:
+    branches: [main]
+    paths:
+      - Dockerfile
+      - architectures.json
+      - packages.json
+      - go.mod
+      - cmd/**
+      - internal/**
+      - buildhelpers/**
+      - packages/*/*/base-image.txt
+      - .github/workflows/builders.yml
+      - .github/workflows/builder.yml
+  schedule:
+    - cron: '19 5 * * 1'
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: utility-builders-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  plan:
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    outputs:
+      targets: ${{ steps.plan.outputs.targets }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
+        with:
+          go-version-file: go.mod
+          cache: false
+      - name: Require the selected Go toolchain
+        run: echo 'GOTOOLCHAIN=local' >> "$GITHUB_ENV"
+      - id: plan
+        run: |
+          targets=$(make --silent builder-list)
+          echo "targets=$targets" >> "$GITHUB_OUTPUT"
+  builder:
+    needs: plan
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.targets) }}
+    uses: ./.github/workflows/builder.yml
+    with:
+      target: ${{ matrix.target }}
+      platforms: ${{ matrix.platforms }}
+    permissions:
+      contents: read
+      packages: write
+    secrets:
+      GH_APP_ID: ${{ secrets.GH_APP_ID }}
+      GH_APP_PRIV_KEY: ${{ secrets.GH_APP_PRIV_KEY }}
+      REGISTRY_USER: ${{ secrets.REGISTRY_USER }}
+      REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}

@@ -1,0 +1,23 @@
+maintainer="LibOps <libops@users.noreply.github.com>"
+# Test-only packages, deliberately older than Alpine's nginx.
+pkgname=nginx
+pkgver=0.0.1
+pkgrel=0
+pkgdesc="Carrier installation regression fixture"
+url="https://github.com/libops/packages"
+arch="noarch"
+license="MIT"
+options="!check"
+subpackages="$pkgname-common"
+depends="$pkgname-common=$pkgver-r$pkgrel"
+package() {
+	install -d "$pkgdir/usr/sbin"
+	printf '#!/bin/sh\necho "nginx version: nginx/0.0.1 (carrier fixture)"\n' > "$pkgdir/usr/sbin/nginx"
+	chmod 755 "$pkgdir/usr/sbin/nginx"
+}
+common() {
+	pkgdesc="Carrier-only dependency fixture"
+	depends=""
+	install -d "$subpkgdir/usr/share/libops-fixture"
+	echo carrier > "$subpkgdir/usr/share/libops-fixture/common"
+}

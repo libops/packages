@@ -1,0 +1,55 @@
+name: "New package or release line"
+description: "Request a package or supported release line on existing OS targets."
+title: "[Package]: "
+body:
+  - type: markdown
+    attributes:
+      value: "Requests are reviewed against our public-facing service scope and upstream-supported-only policy. Package sponsorship covers agreed existing OS targets and ongoing maintenance; it is smaller than OS sponsorship."
+  - type: textarea
+    id: package
+    attributes:
+      label: "Package and release lines"
+      description: "Name the upstream project and supported release lines you need."
+    validations:
+      required: true
+  - type: textarea
+    id: upstream
+    attributes:
+      label: "Upstream source and support policy"
+      description: "Link official releases, source archives, licensing and upstream support/end-of-life information."
+    validations:
+      required: true
+  - type: textarea
+    id: targets
+    attributes:
+      label: "Existing OS targets and architectures"
+      description: "List distro releases and architectures. Use the OS request form if the platform is not yet supported."
+    validations:
+      required: true
+  - type: textarea
+    id: use
+    attributes:
+      label: "Use case"
+      description: "Explain the public-facing service or untrusted-content processing use case and useful installation checks."
+    validations:
+      required: true
+  - type: dropdown
+    id: commitment
+    attributes:
+      label: Are you willing to maintain or sponsor this support?
+      description: A maintainer or sponsor can make the agreed scope part of our release contract after review. Requests without either are welcome but do not establish support.
+      options:
+        - I can maintain it
+        - I can sponsor it
+        - I can maintain and sponsor it
+        - I would like to discuss contributing
+        - Request only for now
+    validations:
+      required: true
+  - type: textarea
+    id: contribution
+    attributes:
+      label: Maintenance or sponsorship proposal
+      description: Describe the scope you can own, relevant experience, test infrastructure, ongoing availability or recurring funding. Do not include payment or private details.
+    validations:
+      required: false
