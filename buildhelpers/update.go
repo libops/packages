@@ -102,12 +102,56 @@ func CheckPins(root string) error {
 		if err != nil {
 			return err
 		}
+		if err = checkLocalSources(root, directory, string(recipe)); err != nil {
+			return fmt.Errorf("%s: %w", p.Target, err)
+		}
 		version, err := field(string(recipe), "pkgver")
 		if err != nil {
 			return err
 		}
 		if _, err = ReadSecurity(directory, version); err != nil {
 			return err
+		}
+	}
+	return nil
+}
+
+// abuild pairs source entries and checksums by position, not by filename.
+// Verify local inputs offline before a runner downloads or compiles anything.
+func checkLocalSources(root, directory, recipe string) error {
+	source := regexp.MustCompile(`(?ms)^source="([^"]*)"`).FindStringSubmatch(recipe)
+	sums := regexp.MustCompile(`(?ms)^sha(256|512)sums="([^"]*)"`).FindStringSubmatch(recipe)
+	if source == nil || sums == nil {
+		return fmt.Errorf("missing native sources/checksums")
+	}
+	files, checksums := strings.Fields(source[1]), strings.Fields(sums[2])
+	if len(checksums) != 2*len(files) {
+		return fmt.Errorf("source and checksum counts differ")
+	}
+	name, _ := field(recipe, "pkgname")
+	version, _ := field(recipe, "pkgver")
+	expand := strings.NewReplacer("${pkgname}", name, "$pkgname", name, "${pkgver}", version, "$pkgver", version)
+	for i, file := range files {
+		if strings.Contains(file, "://") {
+			continue
+		}
+		file = expand.Replace(file)
+		if strings.ContainsAny(file, "$/{\\") || file != filepath.Base(file) {
+			return fmt.Errorf("unsupported local source %q", file)
+		}
+		if checksums[2*i+1] != file {
+			return fmt.Errorf("checksum order differs from source at %s", file)
+		}
+		path := filepath.Join(directory, file)
+		if file == "APORTS-NOTICE" {
+			path = filepath.Join(root, "NOTICE")
+		}
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		if err := Verify(data, "sha"+sums[1], checksums[2*i]); err != nil {
+			return fmt.Errorf("%s: %w", file, err)
 		}
 	}
 	return nil

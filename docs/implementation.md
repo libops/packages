@@ -14,7 +14,9 @@ job IDs cannot collide through punctuation normalization.
 `Dockerfile.package` builds every APK carrier. Source arguments come from the
 native recipe's version, archive and strong checksum. The helper validates those
 arguments and runs `abuild fetch verify` before compilation. There are no generated
-per-target Dockerfiles. Every carrier includes a verified, signed APK index for
+per-target Dockerfiles. Offline pin checks also verify local recipe inputs and
+their positional checksum order, matching abuild's source/checksum pairing.
+Every carrier includes a verified, signed APK index for
 dependency resolution. Go emits a relocatable `/packages/<native-name>` installer
 for every APK, selecting exact files for dependencies produced in the same carrier
 (including shared-library providers). PHP defaults add FPM and OPcache. Installers

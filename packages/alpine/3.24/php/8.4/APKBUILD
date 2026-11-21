@@ -28,7 +28,7 @@
 maintainer="LibOps <libops@users.noreply.github.com>"
 pkgname=php84
 pkgver=8.4.28
-pkgrel=5
+pkgrel=6
 _apiver=20240924
 _suffix=${pkgname#php}
 # Is this package the default (latest) PHP version?
@@ -118,8 +118,8 @@ source="https://www.php.net/distributions/php-$pkgver.tar.xz
 	sharedir.patch
 	$pkgname-fpm-version-suffix.patch
 	phpinfo-avif.patch
-	fix-ini_info.patch
 	oom-rfc1867-shared-extensions.patch
+	fix-ini_info.patch
 	"
 builddir="$srcdir/php-$pkgver"
 

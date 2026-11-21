@@ -126,9 +126,12 @@ GitHub runners. The same runner limitation is documented in the
 [kernel signal-stack fix](https://lore-kernel.gnuweeb.org/lkml/3c2lpv75qz67rkcirawgfcd63pazgur6tw6qp7m6z5tdfimeeh%40v2em57j4ix6e/T/).
 These are exact test-name exclusions, not package/suite skips; ARM64 keeps the
 signal-stack tests. Review them when upstream fixtures or the runner environment
-change. Go's `dist` runner clears `GOFLAGS`, so affected packages run separately
-with `go test -skip`; all remaining dist tests and compiler/linker variants stay
-enabled. Source code and compiler output receive no downstream patch.
+change. Go's `dist` runner clears `GOFLAGS`. Only the sanitizer package runs
+separately with `go test -skip`; runtime and cgo linker variants remain in dist.
+The disposable AMD64 test stage inserts exact `t.Skip` calls in the two signal-stack
+fixtures so every linker variant honors them. Published sources and compiler
+output remain unchanged. Tests disable inherited Go flags/configuration, preventing
+trimmed source paths from breaking traceback assertions.
 
 
 Ruby uses Alpine aports compiler settings, libucontext, and its checksum-pinned

@@ -2,7 +2,7 @@ maintainer="LibOps <libops@users.noreply.github.com>"
 # Official Go source; no downstream source patches.
 pkgname=go127
 pkgver=1.27.4
-pkgrel=5
+pkgrel=6
 pkgdesc="Go 1.27 toolchain for public-facing services"
 url="https://go.dev/"
 arch="x86_64 aarch64"
@@ -25,26 +25,24 @@ build() {
 check() {
     # abuild places GOTMPDIR outside os.TempDir; upstream linker security tests
     # must create fixtures beneath the same trusted temporary root.
-    unset GOTMPDIR
+    unset GOTMPDIR GOFLAGS
     export GOROOT="$builddir"
     export GOTOOLCHAIN=local
+    export GOENV=off
     # Alpine also excludes TSAN: it needs ASLR controls denied by containers.
     # Keep all other sanitizer cases and the rest of the upstream suite.
-    local excluded='^TestTSAN$'
-    local packages='cmd/cgo/internal/testsanitizers'
     if [ "$CARCH" = x86_64 ]; then
         # musl's fixed SIGSTKSZ is too small on newer GitHub AMD64 kernels.
-        # These two C fixtures abort before testing Go; see CI standards.
-        excluded='^(TestTSAN|TestSigStackSwapping|TestSigaltstack)$'
-        packages="$packages runtime cmd/cgo/internal/test"
+        # Apply exact skips only in this disposable test stage, so dist's
+        # internal/external/static/PIE variants honor them too.
+        sed -i 's/^func TestSigStackSwapping(t \*testing.T) {/& t.Skip("musl SIGSTKSZ is below runner kernel minimum");/' src/runtime/crash_cgo_test.go
+        sed -i 's/^func TestSigaltstack(t \*testing.T) {/& t.Skip("musl SIGSTKSZ is below runner kernel minimum");/' src/cmd/cgo/internal/test/cgo_unix_test.go
     fi
     cd src
-    # dist clears GOFLAGS. Run these packages directly with exact exclusions;
-    # keep every other dist test and its compiler/linker variants enabled.
-    local dist_excluded
-    dist_excluded="$(printf '%s' "$packages" | tr ' ' '|')"
-    ./run.bash --no-rebuild -run="!^($dist_excluded)$" || return 1
-    ../bin/go test -count=1 -short -timeout=10m -skip="$excluded" $packages
+    # dist clears GOFLAGS; run only the sanitizer package directly with its
+    # exact exclusion. All runtime and cgo linker variants remain in dist.
+    ./run.bash --no-rebuild -run='!^cmd/cgo/internal/testsanitizers$' || return 1
+    ../bin/go test -trimpath=false -count=1 -short -timeout=10m -skip='^TestTSAN$' cmd/cgo/internal/testsanitizers
 }
 
 package() {

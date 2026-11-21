@@ -37,6 +37,35 @@ func TestVerifyAlgorithmsAndTampering(t *testing.T) {
 	}
 }
 
+func TestLocalSourceChecksumOrder(t *testing.T) {
+	root := t.TempDir()
+	data := []byte("reviewed upstream test patch\n")
+	if err := os.WriteFile(filepath.Join(root, "php84-test.patch"), data, 0600); err != nil {
+		t.Fatal(err)
+	}
+	sum := sha512.Sum512(data)
+	archiveSum := strings.Repeat("a", 128)
+	patchEntry := fmt.Sprintf("%x  php84-test.patch", sum)
+	prefix := "pkgname=php84\npkgver=8.4.28\nsource=\"https://example.test/php-$pkgver.tar.xz $pkgname-test.patch\"\nsha512sums=\""
+	archiveEntry := archiveSum + "  php-8.4.28.tar.xz"
+	for _, tc := range []struct {
+		name, entries string
+		wantError     bool
+	}{
+		{"valid", archiveEntry + "\n" + patchEntry, false},
+		{"reordered", patchEntry + "\n" + archiveEntry, true},
+		{"missing", archiveEntry, true},
+		{"tampered", archiveEntry + "\n" + archiveSum + "  php84-test.patch", true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			err := checkLocalSources(root, root, prefix+tc.entries+"\"\n")
+			if (err != nil) != tc.wantError {
+				t.Fatalf("error = %v, want error %v", err, tc.wantError)
+			}
+		})
+	}
+}
+
 func TestOfficialMetadataParsing(t *testing.T) {
 	algorithm, sum, err := RubyChecksum("- version: 4.0.1\n  sha512:\n    gz: abcdef\n    xz: deadbeef\n", "4.0.1")
 	if err != nil || algorithm != "sha512" || sum != "abcdef" {
@@ -70,7 +99,7 @@ func TestUpdaterVerifiesBeforeWriting(t *testing.T) {
 			}
 			inventory, _ := json.Marshal(map[string]Package{"php": {Target: target, Family: "php", Line: "8.4", SupportedUntil: "2099-12-31", Upstream: "https://www.php.net/supported-versions.php"}})
 			os.WriteFile(filepath.Join(root, "packages.json"), inventory, 0644)
-			recipe := "pkgver=8.4.99\npkgrel=2\nsha512sums=\"\n" + strings.Repeat("a", 128) + "  php-8.4.98.tar.xz\n\"\n"
+			recipe := "pkgname=php84\npkgver=8.4.99\npkgrel=2\nsource=\"https://www.php.net/distributions/php-8.4.98.tar.xz\"\nsha512sums=\"\n" + strings.Repeat("a", 128) + "  php-8.4.98.tar.xz\n\"\n"
 			path := filepath.Join(directory, "APKBUILD")
 			os.WriteFile(path, []byte(recipe), 0644)
 			archive := []byte("official archive")
