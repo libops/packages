@@ -1,8 +1,8 @@
 maintainer="LibOps <libops@users.noreply.github.com>"
 # Build upstream NGINX with the features and paths of its official Alpine APK.
 pkgname=nginx
-pkgver=1.30.7
-pkgrel=3
+pkgver=1.30.8
+pkgrel=0
 pkgdesc="HTTP and reverse proxy server (stable version)"
 url="https://nginx.org/"
 arch="all"
@@ -58,5 +58,5 @@ package() {
 }
 
 sha512sums="
-c88979d6c4da0942110b2b78a5d1a4c62a3f1d943ec0a430f17df8f5d23c32620af44dc53569aac4f4fdd76a7a019dc97d7f994b87203ec35eafc9af8bc78555  nginx-1.30.7.tar.gz
+d5650b0aeb8a9d2d1f5dc3e830a63c51c9777c4aabd22d447bb69fffb6d8cbe2cbbef5b9e4e6650d8ea91601dc394f117bbc05e9eb5f84863a1e9afbf17d4732  nginx-1.30.8.tar.gz
 "
