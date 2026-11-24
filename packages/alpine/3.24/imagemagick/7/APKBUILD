@@ -1,5 +1,5 @@
 maintainer="LibOps <libops@users.noreply.github.com>"
-# upstream-tag=7.1.2-25
+# upstream-tag=7.1.2-36
 # Adapted from: https://git.alpinelinux.org/aports/tree/community/imagemagick/APKBUILD
 # Contributor: Nigel Banks <nigel.g.banks@gmail.com>
 # Contributor: Łukasz Jendrysik <scadu@yandex.com>
@@ -7,8 +7,8 @@ maintainer="LibOps <libops@users.noreply.github.com>"
 # Original Alpine maintainer: Natanael Copa <ncopa@alpinelinux.org>
 pkgname=imagemagick
 _pkgname=ImageMagick
-pkgver=7.1.2.25
-pkgrel=3
+pkgver=7.1.2.36
+pkgrel=0
 _pkgver=${pkgver%.*}-${pkgver##*.}
 _abiver=7
 pkgdesc="Collection of tools and libraries for many image formats"
@@ -407,5 +407,5 @@ webp() {
 }
 
 sha512sums="
-4a0c805d5b4af658ea1dba6cb0f0a8222b346e3f1ab4402c8001da6d63b36c8c9f529cc00b1810edb3b5bf9c3f3138cba9a02bf44cf121cd277a6303d6d13cc9  ImageMagick-7.1.2-25.tar.xz
+e1b8b068a00bc245e7669027b420d10ddee621c251f2f2cf05084e4130aa9fe3e5435e978835209cedfeb5e1bd8bc93b566e17b90098dd386d371783b14e5181  ImageMagick-7.1.2-36.tar.xz
 "
