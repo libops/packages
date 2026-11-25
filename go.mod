@@ -10,6 +10,7 @@ require (
 	github.com/sigstore/sigstore-go v1.4.1
 	github.com/theupdateframework/go-tuf/v2 v2.4.2
 	go.yaml.in/yaml/v3 v3.0.5
+	go.yaml.in/yaml/v4 v4.0.0
 )
 
 require (
