@@ -3,7 +3,7 @@ maintainer="LibOps <libops@users.noreply.github.com>"
 # Adapted from: https://github.com/alpinelinux/aports/blob/787e3b0f296710b6edc170d0c1df3ffda99b2c02/main/ruby/APKBUILD
 pkgname=ruby40
 pkgver=4.0.10
-pkgrel=7
+pkgrel=8
 pkgdesc="Ruby 4.0"
 url="https://www.ruby-lang.org/"
 arch="all"

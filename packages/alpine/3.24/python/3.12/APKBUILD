@@ -2,7 +2,7 @@ maintainer="LibOps <libops@users.noreply.github.com>"
 # Official CPython source; no downstream source patches.
 pkgname=python312
 pkgver=3.12.16
-pkgrel=4
+pkgrel=5
 pkgdesc="CPython 3.12"
 url="https://www.python.org/"
 arch="all"

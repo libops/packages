@@ -2,7 +2,7 @@ maintainer="LibOps <libops@users.noreply.github.com>"
 # Build upstream NGINX with the features and paths of its official Alpine APK.
 pkgname=nginx
 pkgver=1.30.8
-pkgrel=0
+pkgrel=1
 pkgdesc="HTTP and reverse proxy server (stable version)"
 url="https://nginx.org/"
 arch="all"

@@ -27,7 +27,7 @@
 maintainer="LibOps <libops@users.noreply.github.com>"
 pkgname=php85
 pkgver=8.5.13
-pkgrel=4
+pkgrel=5
 _apiver=20250925
 _suffix=${pkgname#php}
 # Is this package the default (latest) PHP version?
