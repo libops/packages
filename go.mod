@@ -5,7 +5,7 @@ go 1.27.0
 toolchain go1.27.4
 
 require (
-	github.com/docker/docker-credential-helpers v0.9.3
+	github.com/docker/docker-credential-helpers v0.9.13
 	github.com/google/go-containerregistry v0.22.1
 	github.com/sigstore/sigstore-go v1.4.1
 	github.com/theupdateframework/go-tuf/v2 v2.4.2
