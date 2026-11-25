@@ -28,7 +28,7 @@
 maintainer="LibOps <libops@users.noreply.github.com>"
 pkgname=php84
 pkgver=8.4.28
-pkgrel=6
+pkgrel=7
 _apiver=20240924
 _suffix=${pkgname#php}
 # Is this package the default (latest) PHP version?

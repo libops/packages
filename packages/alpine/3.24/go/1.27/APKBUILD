@@ -2,7 +2,7 @@ maintainer="LibOps <libops@users.noreply.github.com>"
 # Official Go source; no downstream source patches.
 pkgname=go127
 pkgver=1.27.4
-pkgrel=6
+pkgrel=7
 pkgdesc="Go 1.27 toolchain for public-facing services"
 url="https://go.dev/"
 arch="x86_64 aarch64"

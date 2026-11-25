@@ -2,7 +2,7 @@ maintainer="LibOps <libops@users.noreply.github.com>"
 # Official Go source; no downstream source patches.
 pkgname=go126
 pkgver=1.26.11
-pkgrel=6
+pkgrel=7
 pkgdesc="Go 1.26 toolchain for public-facing services"
 url="https://go.dev/"
 arch="x86_64 aarch64"

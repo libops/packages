@@ -3,7 +3,7 @@ maintainer="LibOps <libops@users.noreply.github.com>"
 # Original Alpine maintainer: Francesco Colista <fcolista@alpinelinux.org>
 pkgname=leptonica
 pkgver=1.87.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Software that is broadly useful for image processing and image analysis applications"
 url="http://www.leptonica.com/"
 arch="all"
