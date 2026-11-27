@@ -8,7 +8,7 @@ require (
 	github.com/docker/docker-credential-helpers v0.9.3
 	github.com/google/go-containerregistry v0.22.1
 	github.com/sigstore/sigstore-go v1.4.1
-	github.com/theupdateframework/go-tuf/v2 v2.4.2
+	github.com/theupdateframework/go-tuf/v2 v2.6.0
 	go.yaml.in/yaml/v3 v3.0.5
 )
 
